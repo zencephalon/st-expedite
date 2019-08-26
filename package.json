@@ -20,6 +20,7 @@
     "expo-constants": "6.0.0",
     "expo-font": "~6.0.0",
     "expo-web-browser": "6.0.0",
+    "lodash": "^4.17.15",
     "nanoid": "^2.0.4",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
@@ -29,6 +30,7 @@
     "react-navigation": "^3.11.0"
   },
   "devDependencies": {
+    "babel-plugin-root-import": "^6.4.1",
     "babel-preset-expo": "^6.0.0",
     "jest-expo": "^34.0.0"
   },

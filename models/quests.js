@@ -5,6 +5,8 @@ QUESTS = 'QUESTS';
 empty = {
   roots: [],
   quests: {},
+  selected: null,
+  archived: [],
 };
 
 emptyQuest = {
