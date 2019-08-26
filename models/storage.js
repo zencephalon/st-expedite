@@ -1,3 +1,5 @@
+import { AsyncStorage } from 'react-native';
+
 export const load = async (modelName, empty) => {
   console.log('load', modelName);
   try {

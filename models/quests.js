@@ -2,12 +2,36 @@ import { load, save } from './storage';
 import nanoid from 'nanoid/non-secure';
 
 QUESTS = 'QUESTS';
+// empty = {
+//   rootIds: [],
+//   quests: {},
+//   selected: null,
+//   archived: [],
+// };
 empty = {
-  roots: [],
-  quests: {},
-  selected: null,
-  archived: [],
-};
+  rootIds: [
+    'a',
+    'b',
+  ],
+  quests: {
+    'a': {
+      id: 'a',
+      name: 'Build St. Expedite',
+      children: [],
+      collapsed: false,
+      completed: false,
+    },
+    'b': {
+      id: 'b',
+      name: 'Build Zwiki',
+      children: [],
+      collapsed: false,
+      completed: false,
+    },
+  },
+  selectedQuest: null,
+  archivedQuests: [],
+}
 
 emptyQuest = {
   id: '',
@@ -20,7 +44,7 @@ emptyQuest = {
 export const loadQuests = () => load(QUESTS, empty);
 export const saveQuests = (quests) => save(QUESTS, quests);
 
-makeQuest = ({ name }) => (
+const makeQuest = ({ name }) => (
   {
     ...emptyQuest,
     name,
@@ -28,27 +52,17 @@ makeQuest = ({ name }) => (
   }
 )
 
-addRoot = (state, { name }) => {
+export const addRoot = (state, { name }) => {
   quest = makeQuest({ name });
 
   return {
     ...state,
     quests: { ...state.quests, [quest.id]: quest },
-    roots: [...state.roots, quest.id],
+    rootIds: [...state.rootIds, quest.id],
   }
 }
 
-updateQuest = (state, updatedQuest) => (
-  {
-    ...state,
-    quests: {
-      ...state.quests,
-      [updatedQuest.id]: updatedQuest,
-    }
-  }
-)
-
-addQuest = (state, parentId, { name }) => {
+export const addQuest = (state, parentId, { name }) => {
   quest = makeQuest({ name });
   parent = state.quests[parentId];
 
@@ -69,14 +83,25 @@ addQuest = (state, parentId, { name }) => {
   }
 }
 
-toggleQuestCompleted = (quest) => (
+const updateQuest = (state, updatedQuest) => (
+  {
+    ...state,
+    quests: {
+      ...state.quests,
+      [updatedQuest.id]: updatedQuest,
+    }
+  }
+)
+
+
+export const toggleQuestCompleted = (quest) => (
   {
     ...quest,
     completed: !quest.completed,
   }
 )
 
-toggleQuestCollapsed = (quest) => (
+export const toggleQuestCollapsed = (quest) => (
   {
     ...quest,
     collapsed: !quest.collapsed,

@@ -1,4 +1,3 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {
   Image,
@@ -8,16 +7,24 @@ import {
   Text,
   View,
 } from 'react-native';
+import QuestsContainer from '~/containers/QuestsContainer';
+import QuestList from '~/components/QuestList';
 
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-      </ScrollView>
+      <QuestsContainer>
+        {questProps => (
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <QuestList {...questProps} />
+          </ScrollView>
+        )}
+      </QuestsContainer>
 
       <View style={styles.tabBarInfoContainer}>
         <Text style={styles.tabBarInfoText}>
@@ -25,7 +32,8 @@ export default function HomeScreen() {
         </Text>
 
         <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
+          style={[styles.codeHighlightContainer, styles.navigationFilename]}
+        >
           <MonoText style={styles.codeHighlightText}>
             navigation/MainTabNavigator.js
           </MonoText>
