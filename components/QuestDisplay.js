@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import ExText from '~/components/ExText';
 import { TextInput, StyleSheet, View } from 'react-native';
+import ExText from '~/components/ExText';
 
 export default class QuestDisplay extends React.Component {
   state = { name: '' };
@@ -10,21 +10,40 @@ export default class QuestDisplay extends React.Component {
     this.props.toggleQuestCollapsed(this.props.questId);
   };
 
+  selectQuest = () => {
+    const { questState, questId } = this.props;
+    const quest = questState.quests[questId];
+    if (questState.selectedQuestId === questId) {
+      this.toggleQuestCollapsed();
+      return;
+    }
+
+    if (quest.collapsed) {
+      this.toggleQuestCollapsed();
+    }
+    this.props.selectQuest(questId);
+  };
+
   addQuest = () => {
     const { addQuest, questId } = this.props;
     const { name } = this.state;
 
-    addQuest(questId, { name });
-    this.setState({ name: '' });
+    if (name !== '') {
+      addQuest(questId, { name });
+      this.setState({ name: '' });
+      this.nameInput.focus();
+    }
   };
 
   render() {
     const { questState, parentId, questId, depth } = this.props;
     const quest = questState.quests[questId];
+    const { selectedQuestId } = questState;
+    const selected = selectedQuestId === questId;
 
     return (
       <View style={{ marginLeft: depth * 16 }}>
-        <ExText onPress={this.toggleQuestCollapsed}>{quest.name}</ExText>
+        <ExText onPress={this.selectQuest}>{quest.name}</ExText>
         {!quest.collapsed && (
           <>
             {quest.children &&
@@ -39,12 +58,18 @@ export default class QuestDisplay extends React.Component {
                   parentId={questId}
                 />
               ))}
-            <TextInput
-              onSubmitEditing={this.addQuest}
-              style={styles.textInput}
-              value={this.state.name}
-              onChangeText={name => this.setState({ name })}
-            />
+            {selected && (
+              <TextInput
+                ref={input => {
+                  this.nameInput = input;
+                }}
+                blurOnSubmit={false}
+                onSubmitEditing={this.addQuest}
+                style={styles.textInput}
+                value={this.state.name}
+                onChangeText={name => this.setState({ name })}
+              />
+            )}
           </>
         )}
       </View>

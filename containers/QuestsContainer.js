@@ -17,9 +17,17 @@ export default class QuestsContainer extends React.Component {
     this.setState({ questState });
   };
 
+  selectQuest = questId => {
+    const { questState } = this.state;
+
+    const newQuestState = Quest.selectQuest(questState, questId);
+
+    this.setState({ questState: newQuestState });
+  };
+
   addQuest = (parentId, { name }) => {
     const { questState } = this.state;
-    newQuestState = parentId
+    const newQuestState = parentId
       ? Quest.addQuest(questState, parentId, { name })
       : Quest.addRoot(questState, { name });
     this.setState({ questState: newQuestState });
@@ -31,7 +39,7 @@ export default class QuestsContainer extends React.Component {
 
     console.log('in toggle quest', quest, questId);
 
-    newQuestState = Quest.updateQuest(
+    const newQuestState = Quest.updateQuest(
       questState,
       Quest.toggleQuestCollapsed(quest)
     );
@@ -39,7 +47,7 @@ export default class QuestsContainer extends React.Component {
   };
 
   render() {
-    const { addQuest, toggleQuestCollapsed } = this;
+    const { addQuest, toggleQuestCollapsed, selectQuest } = this;
     const questState = this.state.questState || {};
 
     return this.props.children({
@@ -47,6 +55,7 @@ export default class QuestsContainer extends React.Component {
       questState,
       addQuest,
       toggleQuestCollapsed,
+      selectQuest,
     });
   }
 }

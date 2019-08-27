@@ -1,14 +1,14 @@
-import { load, save } from './storage';
 import nanoid from 'nanoid/non-secure';
+import { load, save } from './storage';
 
-QUESTS = 'QUESTS';
+const QUESTS = 'QUESTS';
 // empty = {
 //   rootIds: [],
 //   quests: {},
 //   selected: null,
 //   archived: [],
 // };
-empty = {
+const empty = {
   rootIds: ['a', 'b'],
   quests: {
     a: {
@@ -26,11 +26,11 @@ empty = {
       completed: false,
     },
   },
-  selectedQuest: null,
+  selectedQuestId: null,
   archivedQuests: [],
 };
 
-emptyQuest = {
+const emptyQuest = {
   id: '',
   name: '',
   children: [],
@@ -41,6 +41,13 @@ emptyQuest = {
 export const loadQuests = () => load(QUESTS, empty);
 export const saveQuests = quests => save(QUESTS, quests);
 
+export const selectQuest = (questState, questId) => {
+  return {
+    ...questState,
+    selectedQuestId: questId,
+  };
+};
+
 const makeQuest = ({ name }) => ({
   ...emptyQuest,
   name,
@@ -48,7 +55,7 @@ const makeQuest = ({ name }) => ({
 });
 
 export const addRoot = (state, { name }) => {
-  quest = makeQuest({ name });
+  const quest = makeQuest({ name });
 
   return {
     ...state,
@@ -58,8 +65,8 @@ export const addRoot = (state, { name }) => {
 };
 
 export const addQuest = (state, parentId, { name }) => {
-  quest = makeQuest({ name });
-  parent = state.quests[parentId];
+  const quest = makeQuest({ name });
+  const parent = state.quests[parentId];
 
   if (!parent) {
     throw Error(`No parent with parentId: '${parentId}' found`);
