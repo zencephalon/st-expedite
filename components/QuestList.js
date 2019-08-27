@@ -5,7 +5,9 @@ import { TextInput, StyleSheet } from 'react-native';
 import QuestDisplay from '~/components/QuestDisplay';
 
 export default class QuestsList extends React.Component {
-  state = { name: '' };
+  state = { name: '', isSwiping: false };
+
+  setSwiping = isSwiping => this.setState({ isSwiping });
 
   addQuest = () => {
     const { addQuest, parentId } = this.props;
@@ -33,6 +35,8 @@ export default class QuestsList extends React.Component {
               questState={questState}
               questId={questId}
               parentId={parentId}
+              setSwiping={this.setSwiping}
+              isSwiping={this.state.isSwiping}
             />
           ))}
         <TextInput

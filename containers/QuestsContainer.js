@@ -37,8 +37,6 @@ export default class QuestsContainer extends React.Component {
     const { questState } = this.state;
     const quest = questState.quests[questId];
 
-    console.log('in toggle quest', quest, questId);
-
     const newQuestState = Quest.updateQuest(
       questState,
       Quest.toggleQuestCollapsed(quest)
@@ -46,8 +44,24 @@ export default class QuestsContainer extends React.Component {
     this.setState({ questState: newQuestState });
   };
 
+  toggleQuestCompleted = questId => {
+    const { questState } = this.state;
+    const quest = questState.quests[questId];
+
+    const newQuestState = Quest.updateQuest(
+      questState,
+      Quest.toggleQuestCompleted(quest)
+    );
+    this.setState({ questState: newQuestState });
+  };
+
   render() {
-    const { addQuest, toggleQuestCollapsed, selectQuest } = this;
+    const {
+      addQuest,
+      toggleQuestCollapsed,
+      toggleQuestCompleted,
+      selectQuest,
+    } = this;
     const questState = this.state.questState || {};
 
     return this.props.children({
@@ -55,6 +69,7 @@ export default class QuestsContainer extends React.Component {
       questState,
       addQuest,
       toggleQuestCollapsed,
+      toggleQuestCompleted,
       selectQuest,
     });
   }
