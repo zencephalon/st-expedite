@@ -9,19 +9,16 @@ QUESTS = 'QUESTS';
 //   archived: [],
 // };
 empty = {
-  rootIds: [
-    'a',
-    'b',
-  ],
+  rootIds: ['a', 'b'],
   quests: {
-    'a': {
+    a: {
       id: 'a',
       name: 'Build St. Expedite',
       children: [],
       collapsed: false,
       completed: false,
     },
-    'b': {
+    b: {
       id: 'b',
       name: 'Build Zwiki',
       children: [],
@@ -31,7 +28,7 @@ empty = {
   },
   selectedQuest: null,
   archivedQuests: [],
-}
+};
 
 emptyQuest = {
   id: '',
@@ -39,18 +36,16 @@ emptyQuest = {
   children: [],
   collapsed: false,
   completed: false,
-}
+};
 
 export const loadQuests = () => load(QUESTS, empty);
-export const saveQuests = (quests) => save(QUESTS, quests);
+export const saveQuests = quests => save(QUESTS, quests);
 
-const makeQuest = ({ name }) => (
-  {
-    ...emptyQuest,
-    name,
-    id: nanoid(),
-  }
-)
+const makeQuest = ({ name }) => ({
+  ...emptyQuest,
+  name,
+  id: nanoid(),
+});
 
 export const addRoot = (state, { name }) => {
   quest = makeQuest({ name });
@@ -59,8 +54,8 @@ export const addRoot = (state, { name }) => {
     ...state,
     quests: { ...state.quests, [quest.id]: quest },
     rootIds: [...state.rootIds, quest.id],
-  }
-}
+  };
+};
 
 export const addQuest = (state, parentId, { name }) => {
   quest = makeQuest({ name });
@@ -80,30 +75,23 @@ export const addQuest = (state, parentId, { name }) => {
         children: [...parent.children, quest.id],
       },
     },
-  }
-}
+  };
+};
 
-const updateQuest = (state, updatedQuest) => (
-  {
-    ...state,
-    quests: {
-      ...state.quests,
-      [updatedQuest.id]: updatedQuest,
-    }
-  }
-)
+export const updateQuest = (state, updatedQuest) => ({
+  ...state,
+  quests: {
+    ...state.quests,
+    [updatedQuest.id]: updatedQuest,
+  },
+});
 
+export const toggleQuestCompleted = quest => ({
+  ...quest,
+  completed: !quest.completed,
+});
 
-export const toggleQuestCompleted = (quest) => (
-  {
-    ...quest,
-    completed: !quest.completed,
-  }
-)
-
-export const toggleQuestCollapsed = (quest) => (
-  {
-    ...quest,
-    collapsed: !quest.collapsed,
-  }
-)
+export const toggleQuestCollapsed = quest => ({
+  ...quest,
+  collapsed: !quest.collapsed,
+});

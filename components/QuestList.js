@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-import ExText from '~/components/ExText';
 import { TextInput, StyleSheet } from 'react-native';
+
+import QuestDisplay from '~/components/QuestDisplay';
 
 export default class QuestsList extends React.Component {
   state = { name: '' };
@@ -17,18 +18,23 @@ export default class QuestsList extends React.Component {
   render() {
     const { questState, parentId } = this.props;
     console.log('in quest list', this.props.addQuest);
-    const quests = parentId
+    const questIds = parentId
       ? questState.quests[parentId].children
-      : questState.rootIds &&
-        questState.rootIds.map(id => questState.quests[id]);
-
-    console.log('in questlist', quests, questState);
+      : questState.rootIds;
 
     return (
       <>
-        {quests &&
-          questState.rootIds &&
-          quests.map(quest => <ExText key={quest.id}>{quest.name}</ExText>)}
+        {questIds &&
+          questIds.map(questId => (
+            <QuestDisplay
+              {...this.props}
+              depth={0}
+              key={questId}
+              questState={questState}
+              questId={questId}
+              parentId={parentId}
+            />
+          ))}
         <TextInput
           onSubmitEditing={this.addQuest}
           style={styles.textInput}
