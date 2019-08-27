@@ -23,7 +23,7 @@ export default class QuestDisplay extends React.Component {
     const quest = questState.quests[questId];
 
     return (
-      <View style={{ marginLeft: depth * 30 }}>
+      <View style={{ marginLeft: depth * 16 }}>
         <ExText onPress={this.toggleQuestCollapsed}>{quest.name}</ExText>
         {!quest.collapsed && (
           <>
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderColor: 'gray',
     borderWidth: 1,
+    marginLeft: 16,
   },
   multiline: {
     fontSize: 20,
